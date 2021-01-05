@@ -1,16 +1,28 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
-
-const app = express()
+const path =require('path');
+const app=require('./app');
+const bodyParser = require('body-parser');
 
 dotenv.config();
 
-const port = process.env.PORT;
-app.get('/', (req, res) => {
-    res.send('Hello World!')
+const uri = process.env.DATABASE_DEV;
+mongoose.connect(uri,{useNewUrlParser:true, useCreateIndex:true,useUnifiedTopology:true})
+
+const connection = mongoose.connection;
+connection.once('open',()=>{
+    console.log('!!! Database Successfully Connected !!!');
 })
 
+
+// for parsing application/json
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false })); 
+app.use(bodyParser.json()) ;
+
+const port = process.env.PORT;
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
+
