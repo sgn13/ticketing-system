@@ -1,4 +1,5 @@
-const express = require('express')
+const app = require('./app');
+
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const path =require('path');
@@ -14,7 +15,6 @@ const connection = mongoose.connection;
 connection.once('open',()=>{
     console.log('!!! Database Successfully Connected !!!');
 })
-
 
 // for parsing application/json
 app.use(express.json());
