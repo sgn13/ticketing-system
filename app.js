@@ -13,6 +13,7 @@ app.use(bodyParser.json()) ;
 
 //Route Path
 app.use('/api/query', require('./routes/api/query'));
+app.use('/api/answer', require('./routes/api/answer'))
 
 
 

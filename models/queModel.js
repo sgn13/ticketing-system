@@ -16,4 +16,4 @@ const QueSchema = new Schema({
     }
   });  
 
-  module.exports = Query = mongoose.model('item',QueSchema)
+  module.exports = Query = mongoose.model('Query',QueSchema)
