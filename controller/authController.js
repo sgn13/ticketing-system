@@ -98,6 +98,7 @@ exports.protect = async (req, res, next) => {
         if (decoded) {
             req.user = decoded.id;
             next();
+
         }
     } catch (error) {
 
