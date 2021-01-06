@@ -1,20 +1,20 @@
 const express = require('express');
-const { Query } = require('mongoose');
+const mongoose = require('mongoose');
 const router = express.Router()
+const ansController = require('../../controller/ansController')
 
 const Answer = require('../../models/ansModels')
 
-router.post('/',(req,res)=>{
-    const newAnswer = new Answer({
-        answer: req.body.answer
-    });
+ router.post('/:id',async (req,res) =>{
+     const queryid = req.params.id;
+     console.log(queryid);
+     const answer= await Answer.create({
+         answer: req.body.answer,
+         queryid
+     });
+     res.json(answer)
+ })
 
-    newAnswer.save().then(Answer=>res.json(Answer));
-})
-
-router.get('/',(req,res)=>{
-    Answer.find()
-    .then(Answer => res.json(Answer))
-})
+//router.post('/', ansController.submitAnswer)
 
 module.exports = router

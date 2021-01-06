@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router()
 //Query Model
 const Query = require('../../models/queModel')
+const authController = require('../../controller/authController')
 
-router.post('/',(req,res)=>{
+router.post('/', authController.protect, (req,res)=>{
     const newQuery = new Query({
         query: req.body.query,
         ellaborate: req.body.ellaborate
@@ -14,7 +15,7 @@ router.post('/',(req,res)=>{
 console.log(req.body)
 });
 
-router.get('/',(req,res)=>{
+router.get('/', authController.protect, (req,res)=>{
     Query.find()
     //.sort({ date:-1})
     .then(Query => res.json(Query))
@@ -26,4 +27,7 @@ router.delete('/:id',(req,res)=>{
         .then(Query => Query.remove().then(() => res.json({success :true})))
         .catch(err => res.status(404).json({ success:false}))
 })
+
+//router.post("/answer/:id", (req,res)=>console.log(req.params));
+
 module.exports = router 

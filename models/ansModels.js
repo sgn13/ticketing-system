@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const Query = require('./queModel')
 
 const AnsSchema = new Schema({
-    query:{
+    queryid:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Query'
     },
