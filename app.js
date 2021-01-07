@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -9,6 +10,16 @@ app.get('/', (req, res) => {
 app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: false })); 
 
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Origin','*')
+    res.header('Access-Control-Allow-Headers','*');
+if(req.method == "OPTIONS"){
+    res.header('Access-Control-Allow-Methods','PUT','POST','GET','DELETE')
+    return res.status(200).json('ok');
+}
+next();
+})
+//app.use(cors());
 //Route Path
 app.use('/api/query', require('./routes/api/query'));
 app.use('/api/answer', require('./routes/api/answer'))

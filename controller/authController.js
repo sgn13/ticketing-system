@@ -49,7 +49,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
 
     try {
-        const { email, password, firstname } = req.body;
+        const { email, password } = req.body;
 
         //validate
         if (!email || !password) {

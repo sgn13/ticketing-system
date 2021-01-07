@@ -28,6 +28,4 @@ router.delete('/:id',(req,res)=>{
         .catch(err => res.status(404).json({ success:false}))
 })
 
-//router.post("/answer/:id", (req,res)=>console.log(req.params));
-
 module.exports = router 
