@@ -142,7 +142,6 @@ exports.restrictTo = (roles) => {
                 res.status(401).json({
                     msg: 'Unauthorized'
                 })
-
             }
 
         } catch (error) {
