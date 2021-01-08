@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken')
 
 exports.register = async (req, res) => {
     try {
-        let { email, password, passwordCheck, fullname } = req.body;
+        let { email, password, passwordCheck, fullname, role } = req.body;
 
         //validate
-        if (!email || !password || !passwordCheck) {
+        if (!email || !password || !passwordCheck || !role) {
             return res.status(400).json({ msg: 'Not all fields have been entered' })
         }
         if (password.length < 5) {
@@ -32,10 +32,12 @@ exports.register = async (req, res) => {
             email,
             password: passwordHash,
             fullname,
+            role
+
         });
 
         const user = await newUser.save();
-        const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET)
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.TOKEN_SECRET)
         console.log(token);
         res.json({ user, token })
     }
@@ -49,7 +51,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
 
     try {
-        const { email, password, firstname } = req.body;
+        const { email, password, firstname, role } = req.body;
 
         //validate
         if (!email || !password) {
@@ -93,15 +95,62 @@ exports.protect = async (req, res, next) => {
         token = token[1]
 
         const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-        console.log(decoded);
 
-        if (decoded) {
-            req.user = decoded.id;
-            next();
-
+        if (!decoded) {
+            return res.send(401).send('Provide valid token.')
         }
-    } catch (error) {
+        req.user = decoded.id;
+        const user = await User.findById(req.user)
+        if (!user) {
+            return res.send(401).send('User not exist or it may be deleted..')
+        }
+        req.user = user;
 
+        next();
+
+    } catch (error) {
+        res.status(401).json({
+            status: "failed",
+            message: error.message
+        })
     }
 }
 
+// exports.authUser(req, res, next) {
+//     if (req.user == null) {
+//         res.status(403)
+//         return res.send('You need to login')
+//     }
+// }
+
+
+exports.restrictTo = (roles) => {
+    return (req, res, next) => {
+
+        try {
+            let { role } = req.user;
+            console.log(roles);
+
+            if (roles.includes(role)) {
+                console.log("true");
+                // res.status(201).json({
+                //     msg: 'Authrorize'
+                // })
+                next();
+            }
+            else {
+                res.status(401).json({
+                    msg: 'Unauthorized'
+                })
+
+            }
+
+        } catch (error) {
+            res.status(401).json({
+                status: "failed",
+                message: error.message
+            })
+
+        }
+    }
+}

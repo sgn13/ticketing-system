@@ -8,8 +8,8 @@ app.get('/', (req, res) => {
 
 // for parsing application/json
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false })); 
-app.use(bodyParser.json()) ;
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //Route Path
 app.use('/api/query', require('./routes/api/query'));
