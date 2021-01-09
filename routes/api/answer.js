@@ -4,7 +4,8 @@ const router = express.Router()
 const ansController = require('../../controller/ansController');
 const { collection } = require('../../models/ansModels');
 
-const Answer = require('../../models/ansModels')
+const Answer = require('../../models/ansModels');
+const app = require('./userRouter');
 
  router.post('/:id',async (req,res) =>{
      const queryid = req.params.id;
@@ -28,6 +29,8 @@ const Answer = require('../../models/ansModels')
     }
 }
 )
+
+
 
 //router.post('/', ansController.submitAnswer)
 

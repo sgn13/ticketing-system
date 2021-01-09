@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 
 dotenv.config();
 
-const uri = process.env.DATABASE_LOCAL;
+const uri = process.env.DATABASE_DEV;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
 
 const connection = mongoose.connection;

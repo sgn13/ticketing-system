@@ -8,12 +8,8 @@ app.get('/', (req, res) => {
 
 // for parsing application/json
 app.use(express.json());
-<<<<<<< HEAD
-// app.use(bodyParser.urlencoded({ extended: false })); 
-=======
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
->>>>>>> c073d820275bbeb1511157e4ffa79bfd9b2499ad
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 
 app.use((req,res,next)=>{
     res.header('Access-Control-Allow-Origin','*')
