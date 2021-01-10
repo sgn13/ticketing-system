@@ -1,11 +1,12 @@
 const Query = require("../models/queModel");
 
-exports.getQuery = async (req,res)=>{
+exports.gettrue =  async (req,res)=>{
     try{
-        const queries = await Query.find({user_id: req.user.user_id});
+        const queries = await Query.find({is_answered: true});
+        console.log(queries)
         //.sort({ date:-1})
         res.status(200).json({
-            status: "success",
+            status: "true",
             data: queries
         })
     }catch(err){
@@ -14,8 +15,25 @@ exports.getQuery = async (req,res)=>{
             message: err.message
         })
     }
-
 }
+
+exports.getfalse =  async (req,res)=>{
+    try{
+        const queries = await Query.find({is_answered: false});
+        console.log(queries)
+        //.sort({ date:-1})
+        res.status(200).json({
+            status: "false",
+            data: queries
+        })
+    }catch(err){
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+}
+
 exports.getAllQuery = async (req,res)=>{
     try{
         const queries = await Query.find();

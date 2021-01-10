@@ -18,6 +18,8 @@ router.post('/:id',authController.protect, (req,res)=>{
     //const {query,ellaborate} = req.body;
    newQuery.save().then(Query=>res.json(Query)); 
 });
+router.get('/true',queController.gettrue)
+router.get('/false',queController.getfalse)
 
 router.get('/:id',authController.protect, async (req,res)=>{
     try{
@@ -34,6 +36,7 @@ router.get('/:id',authController.protect, async (req,res)=>{
         })
     }
 })
+
 
 
 router.delete('/:id',(req,res)=>{

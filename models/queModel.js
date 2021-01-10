@@ -21,6 +21,10 @@ const QueSchema = new Schema({
       // type: mongoose.Schema.Types.ObjectId,
       // ref: 'User',
       // required: [false, "User id is required"]
+    },
+    is_answered:{
+      type: String,
+      default:false
     }
   });  
 

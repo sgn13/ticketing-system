@@ -9,8 +9,9 @@ const bodyParser = require('body-parser');
 
 dotenv.config();
 
+mongoose.set('useFindAndModify', false);
 const uri = process.env.DATABASE_DEV;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true,useFindAndModify: false })
 
 const connection = mongoose.connection;
 connection.once('open', () => {
