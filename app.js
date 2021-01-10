@@ -8,21 +8,15 @@ app.get('/', (req, res) => {
 
 // for parsing application/json
 app.use(express.json());
-<<<<<<< HEAD
-// app.use(bodyParser.urlencoded({ extended: false })); 
-=======
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
->>>>>>> c073d820275bbeb1511157e4ffa79bfd9b2499ad
 
-app.use((req,res,next)=>{
-    res.header('Access-Control-Allow-Origin','*')
-    res.header('Access-Control-Allow-Headers','*');
-if(req.method == "OPTIONS"){
-    res.header('Access-Control-Allow-Methods','PUT','POST','GET','DELETE')
-    return res.status(200).json('ok');
-}
-next();
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', '*');
+    if (req.method == "OPTIONS") {
+        res.header('Access-Control-Allow-Methods', 'PUT', 'POST', 'GET', 'DELETE')
+        return res.status(200).json('ok');
+    }
+    next();
 })
 //app.use(cors());
 //Route Path

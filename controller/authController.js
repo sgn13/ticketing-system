@@ -51,7 +51,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
 
     try {
-
         const { email, password, firstname, role } = req.body;
 
         //validate
@@ -76,6 +75,7 @@ exports.login = async (req, res) => {
                 id: user._id,
                 firstname: user.firstname,
                 email: user.email
+
             },
         })
 

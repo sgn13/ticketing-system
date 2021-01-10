@@ -4,13 +4,9 @@ const authController = require('../../controller/authController')
 
 //Query Model
 const Query = require('../../models/queModel')
-const authController = require('../../controller/authController')
 
-<<<<<<< HEAD
-router.post('/', authController.protect, (req,res)=>{
-=======
+
 router.post('/', authController.protect, (req, res) => {
->>>>>>> c073d820275bbeb1511157e4ffa79bfd9b2499ad
     const newQuery = new Query({
         query: req.body.query,
         ellaborate: req.body.ellaborate
@@ -21,11 +17,7 @@ router.post('/', authController.protect, (req, res) => {
     console.log(req.body)
 });
 
-<<<<<<< HEAD
-router.get('/', authController.protect, (req,res)=>{
-=======
 router.get('/', authController.protect, (req, res) => {
->>>>>>> c073d820275bbeb1511157e4ffa79bfd9b2499ad
     Query.find()
         //.sort({ date:-1})
         .then(Query => res.json(Query))
