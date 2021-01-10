@@ -5,7 +5,6 @@ const authController = require('../../controller/authController')
 //Query Model
 const Query = require('../../models/queModel')
 
-
 router.post('/', authController.protect, (req, res) => {
     const newQuery = new Query({
         query: req.body.query,
@@ -17,7 +16,9 @@ router.post('/', authController.protect, (req, res) => {
     console.log(req.body)
 });
 
+
 router.get('/', authController.protect, (req, res) => {
+
     Query.find()
         //.sort({ date:-1})
         .then(Query => res.json(Query))
