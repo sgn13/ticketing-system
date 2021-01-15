@@ -1,5 +1,4 @@
-// const Answer = require('../models/ansModels')
-
+const Answer = require('../models/ansModels')
 
 // exports.submitAnswer = async (req,res) =>{
 //     const queryid = req.params.id;
@@ -10,3 +9,4 @@
 //     });
 //     res.json(answer)
 //     }
+

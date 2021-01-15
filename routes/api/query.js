@@ -1,29 +1,38 @@
 const express = require('express')
 const router = express.Router()
-const authController = require('../../controller/authController')
-
 //Query Model
 const Query = require('../../models/queModel')
+const authController = require('../../controller/authController')
+const queController = require('../../controller/queController');
 
-router.post('/', authController.protect, (req, res) => {
+router.get('/', authController.protect, authController.restrictTo(['admin']), queController.getAllQuery)
+
+router.post('/:id', authController.protect, (req, res) => {
+    const user_id = req.params.id;
     const newQuery = new Query({
         query: req.body.query,
-        ellaborate: req.body.ellaborate
+        ellaborate: req.body.ellaborate,
+        user_id
     });
     //const {query,ellaborate} = req.body;
     newQuery.save().then(Query => res.json(Query));
-
-    console.log(req.body)
 });
 
-
-router.get('/', authController.protect, (req, res) => {
-
-    Query.find()
+router.get('/:id', async (req, res) => {
+    try {
+        const queries = await Query.find({ user_id: req.params.id });
         //.sort({ date:-1})
-        .then(Query => res.json(Query))
-
-});
+        res.status(200).json({
+            status: "success",
+            data: queries
+        })
+    } catch (err) {
+        res.status(400).json({
+            status: "fail",
+            message: err.message
+        })
+    }
+})
 
 router.delete('/:id', (req, res) => {
     Query.findById(req.params.id)

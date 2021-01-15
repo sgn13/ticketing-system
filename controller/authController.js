@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
 
         //validate
         if (!email || !password) {
-            return res.status(400).json({ msg: 'Fill up the form' })
+            return res.status(400).json({ msg: 'Fill up all the fields' })
         }
 
         const user = await User.findOne({ email: email });
@@ -132,7 +132,7 @@ exports.restrictTo = (roles) => {
             let { role } = req.user;
             console.log(roles);
 
-            if (roles.includes(role)) {
+            if (roles.includes('r')) {
                 console.log("true");
                 // res.status(201).json({
                 //     msg: 'Authrorize'
@@ -140,13 +140,15 @@ exports.restrictTo = (roles) => {
                 next();
             }
             else {
-                res.status(401).json({
+                res.status(400).json({
                     msg: 'Unauthorized'
                 })
+                console.log('wrong');
+
             }
 
         } catch (error) {
-            res.status(401).json({
+            res.status(400).json({
                 status: "failed",
                 message: error.message
             })

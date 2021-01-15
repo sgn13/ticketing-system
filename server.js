@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const path =require('path');
-const app=require('./app');
+const path = require('path');
+const app = require('./app');
 
 const bodyParser = require('body-parser');
 
