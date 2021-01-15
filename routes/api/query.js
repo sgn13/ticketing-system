@@ -30,6 +30,43 @@ router.get("/false", queController.getfalse);
 router.get("/:id", async (req, res) => {
   try {
     const queries = await Query.find({
+      _id: req.params.id,
+      is_answered: false,
+    });
+    //.sort({ date:-1})
+    res.status(200).json({
+      status: "success",
+      data: queries,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+});
+
+router.get("/user/:id", async (req, res) => {
+  try {
+    const queries = await Query.find({
+      user_id: req.params.id,
+    });
+    //.sort({ date:-1})
+    res.status(200).json({
+      status: "success",
+      data: queries,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+});
+
+router.get("/falsequery/:id", async (req, res) => {
+  try {
+    const queries = await Query.find({
       user_id: req.params.id,
       is_answered: false,
     });
