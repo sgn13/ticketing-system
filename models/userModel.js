@@ -19,7 +19,9 @@ const userSchema = new Schema({
         type: String,
         // default: 'customer',
         // enum: ['customer', 'admin']
-    }
+    },
+    verificationCode: { type: String },
+    verifiedAt: { type: Date },
 })
 
 const User = mongoose.model('user', userSchema)
