@@ -4,10 +4,10 @@ const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
-    let { email, password, passwordCheck, fullname } = req.body;
+    let { email, password, passwordCheck, fullname, role } = req.body;
 
     //validate
-    if (!email || !password || !passwordCheck) {
+    if (!email || !password || !passwordCheck || !role) {
       return res.status(400).json({ msg: "Not all fields have been entered" });
     }
     if (password.length < 5) {
@@ -33,10 +33,14 @@ exports.register = async (req, res) => {
       email,
       password: passwordHash,
       fullname,
+      role,
     });
 
     const user = await newUser.save();
-    const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET);
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.TOKEN_SECRET
+    );
     console.log(token);
     res.json({ user, token });
   } catch (error) {
@@ -47,10 +51,10 @@ exports.register = async (req, res) => {
 //Login
 exports.login = async (req, res) => {
   try {
-    const { email, password, firstname } = req.body;
+    const { email, password, role } = req.body;
 
     //validate
-    if (!email || !password) {
+    if (!email || !password || !role) {
       return res.status(400).json({ msg: "Fill up the form" });
     }
 
@@ -60,6 +64,9 @@ exports.login = async (req, res) => {
         .status(400)
         .json({ msg: "There is no email as per your input" });
 
+    const urole = await User.findOne({ email: email, role: role });
+    if (!urole)
+      return res.status(400).json({ msg: "Your role does not match" });
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) return res.status(400).json({ msg: "Wrong password" });
@@ -72,6 +79,7 @@ exports.login = async (req, res) => {
         id: user._id,
         firstname: user.firstname,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -117,3 +125,29 @@ exports.protect = async (req, res, next) => {
 //         return res.send('You need to login')
 //     }
 // }
+
+exports.restrictTo = (roles) => {
+  return (req, res, next) => {
+    try {
+      let { role } = req.user;
+      console.log(roles);
+
+      if (roles.includes(role)) {
+        console.log("true");
+        // res.status(201).json({
+        //     msg: 'Authrorize'
+        // })
+        next();
+      } else {
+        res.status(401).json({
+          msg: "Unauthorized",
+        });
+      }
+    } catch (error) {
+      res.status(401).json({
+        status: "failed",
+        message: error.message,
+      });
+    }
+  };
+};

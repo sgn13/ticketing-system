@@ -1,30 +1,39 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const OAuthAccessTokenSchema = new Schema({
-    user: { 
-        type: mongoose.Schema.Types.ObjectId,
-         ref: 'User' 
-        },
-    client: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'OAuthClient' },
-    accessToken: { 
-        type: String 
+const OAuthAccessTokenSchema = new Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    accessTokenExpiresAt: { 
-        type: Date 
+    client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "OAuthClient",
     },
-    refreshToken: { 
-        type: String 
+    accessToken: {
+      type: String,
     },
-    refreshTokenExpiresAt: { 
-        type: Date
-     },
-    scope: { 
-        type: String
-     }
-})
+    accessTokenExpiresAt: {
+      type: Date,
+    },
+    refreshToken: {
+      type: String,
+    },
+    refreshTokenExpiresAt: {
+      type: Date,
+    },
+    scope: {
+      type: String,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const OAuthAccessToken = mongoose.model('OAuthAcsessToken', OAuthAccessTokenSchema)
-module.exports = OAuthAccessToken
+const OAuthAccessToken = mongoose.model(
+  "OAuthAcsessToken",
+  OAuthAccessTokenSchema
+);
+module.exports = OAuthAccessToken;

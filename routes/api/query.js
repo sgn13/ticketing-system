@@ -4,15 +4,23 @@ const router = express.Router();
 const Query = require("../../models/queModel");
 const authController = require("../../controller/authController");
 const queController = require("../../controller/queController");
+const roleController = require("../../controller/roleController");
 
+router.get("/q_role", roleController.getrole);
+router.delete("/q_role", roleController.deleterole);
+router.get("/q_type", queController.getQuerytype);
 router.get("/", queController.getAllQuery);
+router.get("/true", queController.gettrue);
+router.get("/false", queController.getfalse);
 
-router.post("/:id", authController.protect, async (req, res) => {
+router.post("/q_role", roleController.role);
+router.post("/:id", async (req, res) => {
   try {
     const user_id = req.params.id;
     const newQuery = await new Query({
       query: req.body.query,
       ellaborate: req.body.ellaborate,
+      q_type: req.body.q_type,
       user_id,
     });
     //const {query,ellaborate} = req.body;
@@ -24,8 +32,6 @@ router.post("/:id", authController.protect, async (req, res) => {
     });
   }
 });
-router.get("/true", queController.gettrue);
-router.get("/false", queController.getfalse);
 
 router.get("/:id", async (req, res) => {
   try {

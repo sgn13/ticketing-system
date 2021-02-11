@@ -1,27 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const OAuthClient = new OAuthClientSchema({
-    user: { 
-        type: mongoose.Schema.Types.ObjectId,
-         ref: 'User'
-         },
-    client: {
-         type: mongoose.Schema.Types.ObjectId,
-          ref: 'OAuthClient'
-         },
-    authorizationCode: { 
-        type: String
-     },
-    expiresAt: { 
-        type: Date
-     },
-    scope: { 
-        type: String
-     }
-}, {
-    timestamps: true
-    })
+const ClientSchema = new Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    clientId: { type: String },
+    clientSecret: { type: String },
+    redirectUris: { type: Array },
+    grants: { type: Array },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const OAuthClient = mongoose.model('OAuthClient', OAuthClientSchema)
-module.exports = OAuthClient
+const OAuthClient = mongoose.model("OAuthClient", ClientSchema);
+module.exports = OAuthClient;
