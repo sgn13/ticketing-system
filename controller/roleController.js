@@ -2,9 +2,7 @@ const Role = require("../models/roleModel");
 exports.role = async (req, res) => {
   try {
     // const roless=[req.body.role]
-    const roles = await Role.insertMany({
-      role: req.body.role,
-    });
+    const roles = await Role.insertMany(req.body);
     res.status(200).json(roles);
   } catch (err) {
     res.status(500).json(err);

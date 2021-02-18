@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const Staff = require("../models/staffModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
     if (password !== passwordCheck) {
       return res.status(400).json({ msg: "Password did not match" });
     }
-    const existingUser = await User.findOne({ email: email });
+    const existingUser = await Staff.findOne({ email: email });
     if (existingUser) {
       return res.status(400).json({ msg: "An account already exist" });
     }
@@ -28,21 +28,21 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    //New user
-    const newUser = new User({
+    //New staff
+    const newStaff = new Staff({
       email,
       password: passwordHash,
       fullname,
       role,
     });
 
-    const user = await newUser.save();
+    const staff = await newStaff.save();
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { id: staff._id, role: staff.role },
       process.env.TOKEN_SECRET
     );
     console.log(token);
-    res.json({ user, token });
+    res.json({ staff, token });
   } catch (error) {
     console.log(error);
   }
@@ -58,13 +58,13 @@ exports.login = async (req, res) => {
       return res.status(400).json({ msg: "Fill up the form" });
     }
 
-    const user = await User.findOne({ email: email });
-    if (!user)
+    const user = await Staff.findOne({ email: email });
+    if (!staff)
       return res
         .status(400)
         .json({ msg: "There is no email as per your input" });
 
-    const urole = await User.findOne({ email: email, role: role });
+    const urole = await Staff.findOne({ email: email, role: role });
     if (!urole)
       return res.status(400).json({ msg: "Your role does not match" });
     const isMatch = await bcrypt.compare(password, user.password);
@@ -75,7 +75,7 @@ exports.login = async (req, res) => {
 
     res.json({
       token,
-      user: {
+      staff: {
         id: user._id,
         firstname: user.firstname,
         email: user.email,
@@ -104,11 +104,11 @@ exports.protect = async (req, res, next) => {
       return res.send(401).send("Provide valid token.");
     }
     req.user = decoded.id;
-    const user = await User.findById(req.user);
-    if (!user) {
+    const staff = await Staff.findById(req.user);
+    if (!staff) {
       return res.send(401).send("User not exist or it may be deleted..");
     }
-    req.user = user;
+    req.staff = staff;
 
     next();
   } catch (error) {
@@ -126,28 +126,54 @@ exports.protect = async (req, res, next) => {
 //     }
 // }
 
-exports.restrictTo = (roles) => {
-  return (req, res, next) => {
-    try {
-      let { role } = req.user;
-      console.log(roles);
+// exports.restrictTo = (roles) => {
+//   return (req, res, next) => {
+//     try {
+//       let { role } = req.user;
+//       console.log(roles);
 
-      if (roles.includes(role)) {
-        console.log("true");
-        // res.status(201).json({
-        //     msg: 'Authrorize'
-        // })
-        next();
-      } else {
-        res.status(401).json({
-          msg: "Unauthorized",
-        });
-      }
-    } catch (error) {
-      res.status(401).json({
-        status: "failed",
-        message: error.message,
-      });
-    }
-  };
+//       if (roles.includes(role)) {
+//         console.log("true");
+//         // res.status(201).json({
+//         //     msg: 'Authrorize'
+//         // })
+//         next();
+//       } else {
+//         res.status(401).json({
+//           msg: "Unauthorized",
+//         });
+//       }
+//     } catch (error) {
+//       res.status(401).json({
+//         status: "failed",
+//         message: error.message,
+//       });
+//     }
+//   };
+// };
+
+exports.restrictTo = (req, res, next) => {
+  try {
+  } catch {}
+};
+
+exports.getStUser = async (req, res) => {
+  try {
+    await Staff.find().then((resp) => {
+      res.status(200).json(resp);
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+};
+
+exports.delStUser = async (req, res) => {
+  try {
+    await Staff.findByIdAndDelete({
+      _id: req.body.id,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
 };

@@ -8,13 +8,14 @@ const roleController = require("../../controller/roleController");
 
 router.get("/q_role", roleController.getrole);
 router.delete("/q_role", roleController.deleterole);
+router.delete("/delquery", queController.deletequery);
 router.get("/q_type", queController.getQuerytype);
 router.get("/", queController.getAllQuery);
 router.get("/true", queController.gettrue);
 router.get("/false", queController.getfalse);
 
 router.post("/q_role", roleController.role);
-router.post("/:id", async (req, res) => {
+router.post("/:id", authController.protect, async (req, res) => {
   try {
     const user_id = req.params.id;
     const newQuery = await new Query({

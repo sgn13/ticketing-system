@@ -110,7 +110,30 @@ exports.protect = async (req, res, next) => {
     });
   }
 };
+exports.getUser = async (req, res) => {
+  try {
+    await User.find().then((resp) => {
+      res.status(200).json(resp);
+      console.log(resp);
+    });
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+};
 
+exports.delUser = async (req, res) => {
+  console.log("ok");
+  try {
+    console.log(req.body.id);
+    await User.findOneAndDelete({
+      _id: req.body.id,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
 // exports.authUser(req, res, next) {
 //     if (req.user == null) {
 //         res.status(403)

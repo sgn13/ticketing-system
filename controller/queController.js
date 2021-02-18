@@ -37,7 +37,7 @@ exports.getfalse = async (req, res) => {
 
 exports.getAllQuery = async (req, res) => {
   try {
-    console.log("allquery");
+    //console.log("allquery");
     const queries = await Query.find();
     //.sort({ date:-1})
     res.status(200).json({
@@ -63,6 +63,14 @@ exports.getQuerytype = async (req, res) => {
   }
 };
 
+exports.deletequery = async (req, res) => {
+  try {
+    const queries = await Query.findOneAndDelete({ _id: req.body.id });
+    res.status(200).json(queries);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 // exports.getAllQuery = async (req,res) =>{
 //     const queries = await Query.find();
 //     res.json({
